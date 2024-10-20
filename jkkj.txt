@@ -1,0 +1,104 @@
+<ref *2> Mux {
+  baseURL: 'https://api.mux.com',
+  maxRetries: 2,
+  timeout: 60000,
+  httpAgent: undefined,
+  fetch: <ref *1> [Function: fetch] {
+    isRedirect: [Function (anonymous)],
+    Promise: [Function: Promise],
+    default: [Circular *1],
+    Headers: [class Headers],
+    Request: [class Request],
+    Response: [class Response],
+    FetchError: [Function: FetchError],
+    AbortError: [Function: AbortError]
+  },
+  video: Video {
+    _client: [Circular *2],
+    assets: Assets { _client: [Circular *2] },     
+    deliveryUsage: DeliveryUsage { _client: [Circular *2] },
+    liveStreams: LiveStreams { _client: [Circular *2] },
+    playbackIds: PlaybackIDs { _client: [Circular *2] },
+    playbackRestrictions: PlaybackRestrictions { _client: [Circular *2] },
+    spaces: Spaces { _client: [Circular *2] },     
+    transcriptionVocabularies: TranscriptionVocabularies { _client: [Circular *2] },
+    uploads: Uploads { _client: [Circular *2] },   
+    webInputs: WebInputs { _client: [Circular *2] },
+    drmConfigurations: DRMConfigurations { _client: [Circular *2] }
+  },
+  data: Data {
+    _client: [Circular *2],
+    dimensions: Dimensions { _client: [Circular *2] },
+    monitoring: Monitoring { _client: [Circular *2], metrics: [Metrics] },
+    errors: Errors { _client: [Circular *2] },     
+    exports: Exports { _client: [Circular *2] },   
+    filters: Filters { _client: [Circular *2] },   
+    incidents: Incidents { _client: [Circular *2] },
+    metrics: Metrics { _client: [Circular *2] },   
+    realTime: RealTime { _client: [Circular *2] }, 
+    videoViews: VideoViews { _client: [Circular *2] }
+  },
+  system: System {
+    _client: [Circular *2],
+    signingKeys: SigningKeys { _client: [Circular *2] }
+  },
+  webhooks: Webhooks { _client: [Circular *2] },   
+  jwt: Jwt { _client: [Circular *2] },
+  _options: {
+    '0': '5',
+    '1': 'f',
+    '2': 'd',
+    '3': '7',
+    '4': 'f',
+    '5': 'c',
+    '6': '6',
+    '7': '9',
+    '8': '-',
+    '9': '9',
+    '10': '5',
+    '11': '7',
+    '12': '9',
+    '13': '-',
+    '14': '4',
+    '15': '3',
+    '16': '5',
+    '17': '1',
+    '18': '-',
+    '19': '8',
+    '20': 'e',
+    '21': '1',
+    '22': 'a',
+    '23': '-',
+    '24': '1',
+    '25': 'c',
+    '26': '0',
+    '27': '1',
+    '28': 'a',
+    '29': '5',
+    '30': 'c',
+    '31': 'd',
+    '32': '6',
+    '33': '7',
+    '34': 'f',
+    '35': '1',
+    tokenId: '5fd7fc69-9579-4351-8e1a-1c01a5cd67f1',
+    tokenSecret: '6nfQjiuRRS3CmRevG9/CAnkx+SWZST7dQzEsrDKYHQW2w4/+ScVcqRjm17ph1hf6+3kb5soPwB8',       
+    webhookSecret: null,
+    jwtSigningKey: null,
+    jwtPrivateKey: null,
+    baseURL: 'https://api.mux.com'
+  },
+  tokenId: '5fd7fc69-9579-4351-8e1a-1c01a5cd67f1', 
+  tokenSecret: '6nfQjiuRRS3CmRevG9/CAnkx+SWZST7dQzEsrDKYHQW2w4/+ScVcqRjm17ph1hf6+3kb5soPwB8',
+  webhookSecret: null,
+  jwtSigningKey: null,
+  jwtPrivateKey: null
+}
+Server is running on port: 5000
+Connected to MongoDB
+I have just arrived
+sdfjlkjsdlfjkl
+File received: {
+  path: 'uploads\\e4ccf2d0edcd6489e403ca712093fe8d',
+  originalname: 'Ù\x83Ù\x8AÙ\x81 Ù\x8AÙ\x84Ø¹Ø¨ Ø§Ù\x84Ù\x86Ù\x88Ù\x85 Ø¯Ù\x88Ø±Ù\x8BØ§ Ù\x81Ù\x8A ØµØ­ØªÙ\x83 Ø§Ù\x84Ø¹Ù\x82Ù\x84Ù\x8AØ©Ø\x9F - Ù\x84Ù\x85Ø§Ø°Ø§ Ù\x86Ù\x86Ø§Ù\x85 - Ø§Ù\x84Ø¬Ø²Ø¡ Ø§Ù\x84Ø®Ø§Ù\x85Ø³ 2.mp4'
+}
