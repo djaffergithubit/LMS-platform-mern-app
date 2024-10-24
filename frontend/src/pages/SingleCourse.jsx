@@ -56,6 +56,7 @@ const SingleCourse = () => {
                 <TopBar />
                 <CourseContent 
                     currentContent={courseChapters[currentContent]}
+                    courseId={courseId}
                 />
             </div>
         </div>

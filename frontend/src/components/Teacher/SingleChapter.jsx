@@ -16,10 +16,11 @@ const SingleChapter = ({ chapter, index, dragChapter, draggedOverChapter, handle
                 {chapter.chapterTitle}
             </div>
             <div className=' flex items-center'>
-            <span className=' text-xs text-white px-3 py-1 rounded-full bg-extraTeal font-semibold'>{chapter.status}</span>
-            <a href={`/user-account/teacher/single-chapter/${chapter._id}`}>
-              <GoPencil className=' ml-2 text-extraTeal' />
-            </a>
+              {chapter.freePreview && <span className=' text-sm center text-gray-900 px-3 rounded-full  font-semibold'>Free</span>}
+              <span className=' text-xs text-white px-3 py-1 rounded-full bg-extraTeal font-semibold'>{chapter.status}</span>
+              <a href={`/user-account/teacher/single-chapter/${chapter._id}`}>
+                <GoPencil className=' ml-2 text-extraTeal' />
+              </a>
             </div>
         </div>
   )

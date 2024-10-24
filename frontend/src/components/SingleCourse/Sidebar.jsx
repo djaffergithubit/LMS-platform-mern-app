@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { AiOutlinePlayCircle } from 'react-icons/ai'
 import { GoLock } from 'react-icons/go'
 
 const Sidebar = ({ activeBtn, setActiveBtn, courseChapters }) => {
@@ -22,7 +23,10 @@ const Sidebar = ({ activeBtn, setActiveBtn, courseChapters }) => {
               onMouseLeave={() => setHoveredElement('')}
               onClick={() => setActiveBtn(`button${index}`)}
             >
-              <GoLock className=' mr-2 text-xl' />
+              {!chapter.freePreview ? 
+                    <GoLock className=' mr-2 text-xl' />
+                  :
+                    <AiOutlinePlayCircle className=' mr-2 text-xl' />}
               {chapter?.chapterTitle}
           </li>
           ))

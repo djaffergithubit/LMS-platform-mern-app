@@ -29,7 +29,7 @@ export const useFormSubmit = ( index, courseId, chapterId, token, forChapter ) =
       }
   
       socket.emit('courseField change', 'Here we go')
-    }else{
+    }else{      
       updateChapter(data, chapterId, token)
       socket.emit('chapterField change', 'chapter added')
     }

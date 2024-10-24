@@ -55,6 +55,31 @@ export const getCourses = (token, updated) => {
   return courses
 }
 
+export const getCurrentCourse = (token, courseId) => {
+  const [currentCourse, setCurrentCourse] = useState()
+
+  const getCurrentCourseApi = async () => {
+    await axios.get(`http://localhost:5000/courses/single-course/${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+    .then((response) => {
+      setCurrentCourse(response.data)
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  useEffect(() => {
+    getCurrentCourseApi()
+  }, [courseId])
+
+  return currentCourse
+}
+
 export const updateCourse = async(data, courseId, token) => {
   await axios.post('http://localhost:5000/courses/update-course', {
     courseId: courseId,

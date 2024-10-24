@@ -155,7 +155,7 @@ const SetupForm = ({ forChapter, course, chapter }) => {
                 course={course}
                 key={index}
                 index={index}
-              field={field}
+                field={field}
               />
             ))}
           </div>

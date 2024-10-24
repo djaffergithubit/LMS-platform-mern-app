@@ -20,8 +20,8 @@ const PriceField = ({ forChapter, courseId, chapterId }) => {
         })} />
         :
         <div className=' text-xs font-semibold text-gray-500 px-5 py-2.5 rounded-md border-2 flex items-center bg-white'>
-          <input type="checkbox" className=' mr-2 cursor-pointer bg-red-500' {...register('chapterAccess')}  />
-          <label htmlFor='chapterAccess'>Check this box if you want to make this chapter free for preview</label>
+          <input type="checkbox" className=' mr-2 cursor-pointer bg-red-500' {...register('freePreview')}  />
+          <label htmlFor='freePreview'>Check this box if you want to make this chapter free for preview</label>
         </div>}
         <SaveButton content={'Save'} />
     </form>

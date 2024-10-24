@@ -12,6 +12,8 @@
   "dependencies": {
     "@mux/mux-player-react": "^2.8.1",
     "@reduxjs/toolkit": "^2.2.6",
+    "@stripe/react-stripe-js": "^2.8.1",
+    "@stripe/stripe-js": "^4.9.0",
     "axios": "^1.7.2",
     "firebase": "^10.13.0",
     "html-to-text": "^9.0.5",

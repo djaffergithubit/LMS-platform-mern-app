@@ -14,7 +14,6 @@ import ReactPlayer from 'react-player';
 
 const CourseField = ({ field, index, course, chapter }) => {
   const [chapters, setChapters] = useState([])
-  const [currentUrl, setCurrentUrl] = useState('')
   const inputField = useSelector(selectInputFieldValue)
   const showInputField = inputField[index]
   const token = useSelector(selectToken)
@@ -76,7 +75,8 @@ const CourseField = ({ field, index, course, chapter }) => {
                   }
                   {field.fieldPurpose}
                 </>
-              :  'Cancel'
+              :  
+                'Cancel'
               }
             </div>
         </div>
@@ -111,7 +111,6 @@ const CourseField = ({ field, index, course, chapter }) => {
                 </>
                 }
             </div>
-            
           </>
         :
         !showInputField && field.title === 'Chapter video' ? 
@@ -133,9 +132,9 @@ const CourseField = ({ field, index, course, chapter }) => {
                  />}
           </>
         :
-          <div>
-            {field.field}
-          </div>
+            <div>
+              {field.field}
+            </div>
         }
     </div>
     </main>
