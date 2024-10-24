@@ -10,6 +10,7 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const Course = require('./models/course');
 const { Chapter } = require('./models/chapter');
+const User = require('./models/users');
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
@@ -33,7 +34,51 @@ app.use(cors({
 //   next();
 // });
 
-app.use(bodyParser.json());
+const endpointSecret = "whsec_8eed9c5a0dd2e1f8969b00ce9c749a941d710e088ce7ded3349d2e0e1287d323";
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+  const sig = request.headers[`stripe-signature`];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    console.log(`⚠️  Webhook signature verification failed: ${err.message}`);
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const session = event.data.object; 
+      const courseId = session.metadata.courseId;
+      const userId = session.metadata.userId;
+
+      const updateUser = async (courseId) => {
+        const userFound = await User.findById(userId)
+        
+        if (!userFound) {
+          console.log('user not found');
+        }else{
+          userFound.enrolledCourses = [...userFound.enrolledCourses, {courseId: courseId, progress: 0}]
+          await userFound.save()
+        }
+      }
+
+      updateUser(courseId)
+      
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  response.status(200).send(); // Acknowledge receipt of the event
+});
+
+
+app.use(bodyParser.json({ verify: (req, res, buf) => { req.rawBody = buf.toString(); } }));
 
 app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
@@ -104,51 +149,6 @@ const upload = multer({
 app.use('/users', require('./Routes/userRoute'));
 app.use('/courses', upload.single('courseImage'), require('./Routes/courseRoute'));
 app.use('/chapters', upload.single('chapterVideo'), require('./Routes/chapterRoute'));
-
-const endpointSecret = "whsec_8eed9c5a0dd2e1f8969b00ce9c749a941d710e088ce7ded3349d2e0e1287d323";
-
-app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
-  const sig = request.headers['stripe-signature'];
-
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed: ${err.message}`);
-    return response.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const session = event.data.object; 
-      const courseId = session.metadata.courseId;
-      const userId = session.metadata.userId;
-
-      const updateChapter = async (courseId) => {
-        const courseChapters = await Chapter.find({courseId})
-
-        if (!courseChapters) {
-          console.log('no chapters found');
-        }else{      
-          courseChapters.forEach( async (chapter) => {
-            await Chapter.findByIdAndUpdate(chapter._id, {
-              freePreview: true
-            })
-          })
-        }
-      }
-
-      updateChapter(courseId)
-      
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  response.status(200).send(); // Acknowledge receipt of the event
-});
 
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

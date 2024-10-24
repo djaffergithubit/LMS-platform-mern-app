@@ -33,7 +33,7 @@ router.post('/checkout-session', isAuth, async (req, res) => {
             cancel_url: 'http://localhost:5173/failed',
             metadata: {
                 courseId: course._id, 
-                userId: req.user.id,
+                userId: req.user.userId,
             },
 
         })
