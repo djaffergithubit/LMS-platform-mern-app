@@ -87,10 +87,27 @@ const getCourseChapters = async (req, res) => {
     }
 }
 
+const getCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params
+        const courseFound = await Course.findById(courseId)
+
+        if (!courseFound) {
+            return res.status(404).json({ 'message': 'course not found' })
+        }
+
+        return res.status(201).json(courseFound)
+
+    } catch (error) {
+        return res.status(500).json({ 'message': error.message })
+    }
+}
+
 module.exports = { 
     createCourseController, 
     getCursesController, 
     updateCourseController,
     setCourseStatus,
-    getCourseChapters
+    getCourseChapters,
+    getCourse
 }

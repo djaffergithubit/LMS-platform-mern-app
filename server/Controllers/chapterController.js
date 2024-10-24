@@ -1,7 +1,6 @@
 const { Chapter } = require("../models/chapter")
 const Course = require("../models/course")
 
-
 const addChapterController = async (req, res) => {
     try {
         const { chapterTitle, courseId } = req.body
