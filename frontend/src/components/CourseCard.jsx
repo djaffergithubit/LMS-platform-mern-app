@@ -10,11 +10,11 @@ const CourseCard = ({ course }) => {
 
   const token = useSelector(selectToken)
   const user = useProfile(token)
-  const [currentUser, setCurrentCourse] = useState(user)
+  const [currentUser, setCurrentUser] = useState(user)
 
   useEffect(() => {
     if (user) {
-      setCurrentCourse(user)
+      setCurrentUser(user)
     }
   }, [user])
 

@@ -29,7 +29,7 @@ const features = [
 const Features = () => {
   return (
    <main className=' sm:px-6 px-2'>
-        <div className=' grid md:grid-cols-4 grid-cols-2 place-self-start py-20 xl:mx-12 md:mx-9 mx-4 md:gap-0 gap-y-8'>
+        <div className=' grid md:grid-cols-4 grid-cols-2 place-self-center py-20 xl:mx-12 md:mx-9 mx-4 md:gap-0 gap-y-8 w-full'>
             {
                 features.map((feature, index) => (
                     <div key={index} className=' flex flex-col justify-center items-center gap-y-4'>

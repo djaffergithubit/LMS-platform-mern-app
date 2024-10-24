@@ -1,5 +1,5 @@
 import { htmlToText } from 'html-to-text'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { GoLock } from 'react-icons/go'
 import ReactPlayer from 'react-player'
 import { loadStripe } from "@stripe/stripe-js"
@@ -7,17 +7,11 @@ import axios from 'axios'
 import { getCurrentCourse } from '../../api'
 import { useSelector } from 'react-redux'
 import { selectToken } from '../../states/authTokenSlice'
-import { socket } from '../../socket'
 
-const CourseContent = ({ currentContent, courseId }) => {
+const CourseContent = ({ currentContent, courseId, enrolledCourse }) => {
 
     const token = useSelector(selectToken)
     const currentCourse = getCurrentCourse(token, courseId)
-
-    useEffect(() => {
-        console.log('course content', currentCourse);
-        
-    }, [currentCourse])
 
     const makePayment = async () =>{
         if (currentCourse !== undefined) {
@@ -45,7 +39,7 @@ const CourseContent = ({ currentContent, courseId }) => {
 
   return (
     <div className=' px-6 py-4 max-w-3xl w-full mx-auto'>
-        {(currentContent?.chapterVideo && currentContent.freePreview) ? <ReactPlayer
+        {(currentContent?.chapterVideo && (currentContent?.freePreview || enrolledCourse)) ? <ReactPlayer
             url={currentContent?.chapterVideo}
             playing={true} 
             controls={true} 
@@ -61,7 +55,7 @@ const CourseContent = ({ currentContent, courseId }) => {
         }
         <div className=' flex justify-between items-center py-6 border-b-2 mb-6'>
             <h3 className=' text-xl font-bold'>{currentContent?.chapterTitle}</h3>
-            <button className=' px-5 py-1.5 text-white text-sm font-light bg-extraTeal ' onClick={makePayment}>Enroll for 15$</button>
+            <button className=' px-5 py-1.5 text-white text-sm font-light bg-extraTeal ' onClick={makePayment}>{enrolledCourse ? 'Mark as complete' : 'Enroll for 15$'}</button>
         </div>
         <div className=' text-gray-900 text-base'>
             {htmlToText(currentContent?.chapterDescription)}

@@ -20,7 +20,7 @@ export const useProfile = (token) => {
   
     useEffect(() => {
       getUser()
-    }, [])
+    }, [token])
   
     return user
   }

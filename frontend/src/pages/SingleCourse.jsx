@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectToken } from '../states/authTokenSlice'
 import axios from 'axios'
+import { useProfile } from '../hooks/useProfile'
 
 const SingleCourse = () => {
     const [activeBtn, setActiveBtn] = useState('button0')
@@ -15,6 +16,9 @@ const SingleCourse = () => {
     const { courseId } = useParams()
     const token = useSelector(selectToken)
     const [courseChapters, setCourseChapters] = useState([])
+    const user = useProfile(token)
+    const [currentUser, setCurrentUser] = useState()
+    const [enrolledCourse, setEnrolledCourse] = useState(false)
 
     const getChaptersApi = async() => {
       await axios.get(`http://localhost:5000/chapters/${courseId}`, {
@@ -31,6 +35,16 @@ const SingleCourse = () => {
         console.log(err);
       })
     }
+
+    useEffect(() => {
+        if (user) {
+            setCurrentUser(user)
+        }
+    }, [user])
+
+    useEffect(() => {
+        currentUser && currentUser.enrolledCourses.find(course => course.courseId === courseId) && setEnrolledCourse(true)
+    }, [currentUser, courseId])
   
     useEffect(() => {
       getChaptersApi()
@@ -51,12 +65,14 @@ const SingleCourse = () => {
                 activeBtn={activeBtn}
                 setActiveBtn={setActiveBtn}
                 courseChapters={courseChapters}
+                enrolledCourse={enrolledCourse}
             />
             <div className=' flex-8'>
                 <TopBar />
                 <CourseContent 
                     currentContent={courseChapters[currentContent]}
                     courseId={courseId}
+                    enrolledCourse={enrolledCourse}
                 />
             </div>
         </div>
