@@ -9,16 +9,19 @@ import { useSelector } from 'react-redux'
 import { selectToken } from '../states/authTokenSlice'
 import axios from 'axios'
 import { useProfile } from '../hooks/useProfile'
+import { getCurrentCourse } from '../api'
 
 const SingleCourse = () => {
     const [activeBtn, setActiveBtn] = useState('button0')
-    const [currentContent, setCurrentContent] = useState(0)
+    const [currentChapter, setCurrentChapter] = useState(0)
     const { courseId } = useParams()
     const token = useSelector(selectToken)
     const [courseChapters, setCourseChapters] = useState([])
     const user = useProfile(token)
     const [currentUser, setCurrentUser] = useState()
     const [enrolledCourse, setEnrolledCourse] = useState(false)
+    const [currentEnrolledCourse, setCurrentEnrolledCourse] = useState({})
+    const currentCourse = getCurrentCourse(token, courseId)
 
     const getChaptersApi = async() => {
       await axios.get(`http://localhost:5000/chapters/${courseId}`, {
@@ -43,7 +46,15 @@ const SingleCourse = () => {
     }, [user])
 
     useEffect(() => {
-        currentUser && currentUser.enrolledCourses.find(course => course.courseId === courseId) && setEnrolledCourse(true)
+        // currentUser && currentUser.enrolledCourses.find(course => course.courseId === courseId) && setEnrolledCourse(true)
+        if (currentUser) {
+          const courseFound = currentUser.enrolledCourses.find(course => course.courseId === courseId)
+          if(courseFound){
+            setEnrolledCourse(true)
+            setCurrentEnrolledCourse(courseFound)
+          }
+        }
+
     }, [currentUser, courseId])
   
     useEffect(() => {
@@ -51,12 +62,8 @@ const SingleCourse = () => {
     }, [courseId])
 
     useEffect(() => {
-        setCurrentContent(activeBtn.toString().slice(-1))
+        setCurrentChapter(activeBtn.toString().slice(-1))
     }, [activeBtn])
-
-    useEffect(() => {
-      console.log('courseChapters', courseChapters);
-    }, [courseChapters])
 
   return (
     <main className=' bg-white min-h-screen h-full'>
@@ -66,13 +73,17 @@ const SingleCourse = () => {
                 setActiveBtn={setActiveBtn}
                 courseChapters={courseChapters}
                 enrolledCourse={enrolledCourse}
+                courseTitle={currentCourse?.title}
+                currentEnrolledCourse={currentEnrolledCourse}
             />
             <div className=' flex-8'>
                 <TopBar />
                 <CourseContent 
-                    currentContent={courseChapters[currentContent]}
+                    currentChapter={courseChapters[currentChapter]}
                     courseId={courseId}
                     enrolledCourse={enrolledCourse}
+                    currentUser={currentUser}
+                    coursePrice={currentCourse?.Price}
                 />
             </div>
         </div>

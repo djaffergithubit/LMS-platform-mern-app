@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 import { AiOutlinePlayCircle } from 'react-icons/ai'
 import { GoLock } from 'react-icons/go'
+import CourseProgress from '../CourseProgress'
 
-const Sidebar = ({ activeBtn, setActiveBtn, courseChapters, enrolledCourse }) => {
+const Sidebar = ({ activeBtn, setActiveBtn, courseChapters, enrolledCourse, courseTitle, currentEnrolledCourse}) => {
   const [hoveredElement, setHoveredElement] = useState('')
 
   return (
     <nav className='  max-w-xs w-full flex-4 border-r-2 border-gray-100 h-screen'>
       <div className=''>
-        <h1 className=' text-xl font-bold text-blue-950 px-6 pb-7 pt-6'>Yoga For Beginners</h1>
+        <h1 className=' text-lg font-bold text-blue-950 px-6 pb-7 pt-6'>{courseTitle}</h1>
       </div>
-      {/* <CourseProgress 
-        progress={0}
-      /> */}
+      {enrolledCourse && <div className=' px-6 pb-7'>
+        <CourseProgress
+          progress={currentEnrolledCourse?.progress}
+        />
+      </div>}
       <ul className=' flex flex-col border-t-2 border-gray-100'>
         {
           courseChapters?.map((chapter, index) => (

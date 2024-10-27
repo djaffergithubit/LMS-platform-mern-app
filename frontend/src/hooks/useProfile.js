@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { socket } from "../socket"
 
 export const useProfile = (token) => {
     const [user, setUser] = useState()
@@ -20,6 +21,19 @@ export const useProfile = (token) => {
   
     useEffect(() => {
       getUser()
+      socket.on('chapter completed', (message) => {
+        console.log(message);
+        getUser()
+      })
+
+      socket.on('enroll free course', (message) => {
+        getUser()
+      })
+
+      return () => {
+        socket.off('chapter completed')
+      }
+
     }, [token])
   
     return user

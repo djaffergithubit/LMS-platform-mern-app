@@ -26,7 +26,7 @@ const Home = () => {
           <Stats />
       </main>
       <div>
-        <Outlet />
+        <Outlet />h
       </div>
     </>
   )

@@ -22,7 +22,7 @@ export const useFormSubmit = ( index, courseId, chapterId, token, forChapter ) =
         console.log(data.chapterTitle);
         
         addChapter(data.chapterTitle, courseId, token)
-        socket.emit('new chapter added', 'chapter added')
+        socket.emit('new chapter added', {message: 'chapter added', courseId: courseId})
       }
       else{
         updateCourse(data, courseId, token)

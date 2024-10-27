@@ -30,7 +30,7 @@ const CourseCard = ({ course }) => {
           </div>
 
           <div className='py-4 px-2'>
-            <h1 className=' h-10 mb-6 text-base text-blue-950 font-bold'>{(course?.title)?.length <= 62 ? course?.title : `${(course?.title)?.slice(0, 61)}...` }</h1>
+            <h1 className=' h-10 mb-6 text-base text-blue-950 font-bold'>{(course?.title)?.length <= 50 ? course?.title : `${(course?.title)?.slice(0, 49)}...` }</h1>
             <div className=' flex items-center justify-between'>
                 <span className=' text-sm text-gray-400'>{course?.category}</span>
                 <div className=' flex items-center '>
