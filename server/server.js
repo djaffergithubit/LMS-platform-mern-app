@@ -11,6 +11,7 @@ const { Server } = require('socket.io');
 const Course = require('./models/course');
 const { Chapter } = require('./models/chapter');
 const User = require('./models/users');
+const updateUser = require('./utils/updateUser');
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
@@ -27,12 +28,6 @@ app.use(cors({
   methods: ['GET', 'POST'],
   credentials: true,
 }));
-
-// app.use((req, res, next) => {
-//   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-//   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-//   next();
-// });
 
 const endpointSecret = "whsec_8eed9c5a0dd2e1f8969b00ce9c749a941d710e088ce7ded3349d2e0e1287d323";
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -56,18 +51,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (request, respon
       const courseId = session.metadata.courseId;
       const userId = session.metadata.userId;
 
-      const updateUser = async (courseId) => {
-        const userFound = await User.findById(userId)
-        
-        if (!userFound) {
-          console.log('user not found');
-        }else{
-          userFound.enrolledCourses = [...userFound.enrolledCourses, {courseId: courseId, progress: 0}]
-          await userFound.save()
-        }
-      }
-
-      updateUser(courseId)
+      updateUser(courseId, userId)
       
       break;
     default:
@@ -98,19 +82,43 @@ io.on('connection', (socket) => {
     io.emit('courseField change', message);
   });
 
-  socket.on('new chapter added', (message) => {
-    io.emit('new chapter added', message);
+  socket.on('new chapter added', async (data) => {
+    const { message, courseId } = data
+    const courseFound = await Course.findById(courseId)
+
+    if (courseFound) {
+      courseFound.courseChapters += 1
+      await courseFound.save()
+      io.emit('new chapter added', message);
+    }  
   });
 
   socket.on('chapterField change', (message) => {
     io.emit('chapterField change', message);
   });
 
-  socket.on('stripe success', async (data) => {
+  socket.on('chapter completed', async (data) => {
+    const { courseId, userId, chapterId } = data
+    const user = await User.findById(userId)
+    const course = await Course.findById(courseId)
+
+    if (user ) {
+      const enrolledCourseFound = user.enrolledCourses.find(course => (course.courseId).toString() === courseId)
+      if (enrolledCourseFound && !enrolledCourseFound.completedChapters.includes(chapterId)) {
+        enrolledCourseFound.completedChapters = [...enrolledCourseFound.completedChapters, chapterId]
+        enrolledCourseFound.progress = Math.round(((enrolledCourseFound.completedChapters).length / course.courseChapters) * 100)
+        await user.save()
+        // update progress value depending on the completedChapters length
+        io.emit('chapter completed', {message:'chapter completed'})
+      }
+    }
     
-    const { message, courseId } = data
-    console.log('stripe success', message, courseId);
-    
+  })
+
+  socket.on('enroll free course', (data) => {
+    const { courseId, userId } = data
+    updateUser(courseId, userId)
+    io.emit('enroll free course', {message:'course enrolled'})
   })
 
   socket.on('disconnect', () => {

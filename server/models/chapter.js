@@ -24,7 +24,7 @@ const chapterSchema = new mongoose.Schema({
 
     freePreview: {
         type: Boolean,
-        default: false
+        default: true
     },
 
     status: {

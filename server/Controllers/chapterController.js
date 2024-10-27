@@ -15,7 +15,6 @@ const addChapterController = async (req, res) => {
             courseId
         })
 
-        await Course.findByIdAndUpdate(courseId, {courseChapters: courseFound.courseChapters + 1})
         await newChapter.save()
         return res.status(201).json({'message': 'chapter created successfully'} )
 

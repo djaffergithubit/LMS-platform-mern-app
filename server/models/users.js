@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
         ref: 'Course'
       },
 
+      completedChapters: {
+        type: [mongoose.Schema.Types.ObjectId],
+        default: []
+      },
+
       progress: {
         type: Number,
         default: 0
