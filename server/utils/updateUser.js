@@ -5,9 +5,11 @@ const updateUser = async (courseId, userId) => {
     
     if (!userFound) {
       console.log('user not found');
-    }else{
+    }else if(!userFound.enrolledCourses.find(course => (course.courseId).toString() === courseId)){
       userFound.enrolledCourses = [...userFound.enrolledCourses, {courseId: courseId, progress: 0}]
       await userFound.save()
+    }else{
+        console.log('course already enrolled');
     }
   }
 
