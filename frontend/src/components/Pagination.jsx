@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa6";
 import { SlOptions } from 'react-icons/sl';
 import CourseCard from './CourseCard';
 import { MdOutlineEdit } from 'react-icons/md';
+import { BeatLoader } from 'react-spinners';
 
-const Pagination = ({ items, forTeacher, showEditButton, optionClicked }) => {
+const Pagination = ({ items, forTeacher, showEditButton, optionClicked, loading }) => {
 
   const itemsPerPage = !forTeacher ? 9 : 6;
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +38,7 @@ const Pagination = ({ items, forTeacher, showEditButton, optionClicked }) => {
 
   return (
     <div className='sm:flex-9 w-full sm:max-w-4xl max-w-md sm:mx-0 mx-auto h-full'>
-      <div className={!forTeacher && 'w-full grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-stretch gap-1.5 gap-y-6'}>
+      {!loading ? <div className={!forTeacher && 'w-full grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-stretch gap-1.5 gap-y-6'}>
         {Object.keys(currentItems).length > 0 ?
         ( !forTeacher ?  
             (currentItems.map((item, index) => (
@@ -74,7 +75,13 @@ const Pagination = ({ items, forTeacher, showEditButton, optionClicked }) => {
               <h1 className='text-lg text-start w-full text-gray-900 font-bold'>No courses found</h1>
             }
       </div>
-
+      :
+        <div className=' flex justify-center items-center h-96 w-full'>
+        <BeatLoader 
+          color='#016A70'
+        />
+        </div>
+      }
 
       <div className="flex justify-center items-center mt-9">
         <button

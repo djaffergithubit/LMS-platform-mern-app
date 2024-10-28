@@ -90,13 +90,9 @@ const VideoField = ({ chapterId }) => {
     <div className="bg-white w-full h-full">
       {file ? (
         <form className="flex flex-col items-start justify-start text-start w-full" onSubmit={submitVideo} encType='multipart/form-data'>
-          {/* <video controls className="w-full max-w-md">
-            <source src={file.preview} type={file.type} />
-            Your browser does not support the video tag.
-          </video> */}
           <ReactPlayer 
             url={file.preview}
-            playing={true} 
+            playing={false} 
             controls={true} 
             volume={0.8}
             muted={false}

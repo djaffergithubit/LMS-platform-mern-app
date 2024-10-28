@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import CourseCard from '../CourseCard'
 import { getCourses } from '../../api'
 import { useSelector } from 'react-redux'
 import { selectToken } from '../../states/authTokenSlice'
@@ -10,6 +9,7 @@ const AllCourses = ({ activeFilter, setActiveFilter, showResults, currentFilters
   const token = useSelector(selectToken)
   const courses = getCourses(token)
   const [displayedCourses, setDisplayedCourses] = useState(courses)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if(activeFilter !== ''){
@@ -23,9 +23,7 @@ const AllCourses = ({ activeFilter, setActiveFilter, showResults, currentFilters
   useEffect(() => {
       let filteredCourses = courses
       for (const filter in currentFilters) {
-        if (currentFilters[filter].length > 0) {
-          console.log('length is greater than 0');
-          
+        if (currentFilters[filter].length > 0) {          
           if (filter.toLowerCase() == 'rating') {
             filteredCourses = filteredCourses.filter(course => course[filter.toLowerCase()] >= Math.max(...currentFilters[filter]))
           }else{
@@ -43,16 +41,21 @@ const AllCourses = ({ activeFilter, setActiveFilter, showResults, currentFilters
     setActiveFilter('')
   }, [all])
 
-  useEffect(() => {
-    console.log('courses', displayedCourses);
-    
+  useEffect(() => {    
     setDisplayedCourses(courses.filter(course => course.status === 'Published'))
   }, [courses])
+
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+  }, [displayedCourses])
 
   return (
       <Pagination 
         items={displayedCourses}
-        // forTeacher={false}
+        loading={loading}
       />
   )
 }

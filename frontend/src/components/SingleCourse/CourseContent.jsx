@@ -16,6 +16,14 @@ const CourseContent = ({ currentChapter, courseId, enrolledCourse, currentUser, 
     const token = useSelector(selectToken)
     const currentCourse = getCurrentCourse(token, courseId)
     
+    const handleProgress = (state) => {
+        const playedPercentage = state.played * 100;
+    
+        if (playedPercentage >= 90 && content === 'Mark as completed') {
+          onChapterCompleted();
+        }
+    }
+
     const onChapterCompleted = async () => {
         setLoading(true)
         socket.emit('chapter completed', {courseId: courseId, userId: currentUser._id, chapterId: currentChapter._id})
@@ -54,18 +62,19 @@ const CourseContent = ({ currentChapter, courseId, enrolledCourse, currentUser, 
             }}
     }
 
-    const content = enrolledCourse ? ((currentUser.enrolledCourses.find(course => course.courseId === courseId)?.completedChapters).includes(currentChapter._id) ? 'Completed' : 'Mark as completed') : (coursePrice === 'Free' || coursePrice === '0') ? `Enroll for Free` : `Enroll for ${coursePrice}$`
+    const content = enrolledCourse ? ((currentUser.enrolledCourses.find(course => course.courseId === courseId)?.completedChapters).includes(currentChapter?._id) ? 'Completed' : 'Mark as completed') : (coursePrice === 'Free' || coursePrice === '0') ? `Enroll for Free` : `Enroll for ${coursePrice}$`
 
   return (
     <div className=' px-6 py-4 max-w-3xl w-full mx-auto'>
         {(currentChapter?.chapterVideo && (currentChapter?.freePreview || enrolledCourse)) ? <ReactPlayer
             url={currentChapter?.chapterVideo}
-            playing={true} 
+            playing={false} 
             controls={true} 
             volume={0.8}
             muted={false}
             width='100%'
             height='100%'
+            onProgress={handleProgress}
             />
             :
             <div className=' bg-gray-800 w-full h-[400px] border-2 flex items-center justify-center text-white'>
@@ -74,7 +83,11 @@ const CourseContent = ({ currentChapter, courseId, enrolledCourse, currentUser, 
         }
         <div className=' flex justify-between items-center py-6 border-b-2 mb-6'>
             <h3 className=' text-xl font-bold'>{currentChapter?.chapterTitle}</h3>
-            <button className={`px-5 py-1.5 text-white text-sm font-light  ${content === 'Completed' ? 'flex items-center bg-green-600' : 'bg-extraTeal'}`} onClick={content === 'Mark as completed' ? onChapterCompleted : content === 'Enroll for Free' ? enrollFreeCourse : content === `Enroll for ${coursePrice}$` ? makePayment : ''}>{content === 'Completed' && <FaRegCircleCheck className=' text-xl mr-1.5' />}{loading ? 'Loading...' : content}</button>
+            <button className={`px-5 py-1.5 text-white text-sm font-light  ${content === 'Completed' ? 'flex items-center bg-green-600' : 'bg-extraTeal'}`} 
+                disabled={content === 'Completed' && true} 
+                onClick={content === 'Mark as completed' ? onChapterCompleted : content === 'Enroll for Free' ? enrollFreeCourse : content === `Enroll for ${coursePrice}$` ? makePayment : ''}>
+                    {content === 'Completed' && <FaRegCircleCheck className=' text-xl mr-1.5' />}{loading ? 'Loading...' : content}
+            </button>
         </div>
         <div className=' text-gray-900 text-base'>
             {htmlToText(currentChapter?.chapterDescription)}

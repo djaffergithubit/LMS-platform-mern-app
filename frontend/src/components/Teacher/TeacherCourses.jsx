@@ -17,6 +17,7 @@ const TeacherCourses = () => {
     const [searchTitle, setSearchTitle] = useState('')
     const [displayedCourses, setDisplayedCourses] = useState(teacherCourses)
     const [showEditButton, setShowEditButton] = useState(Array(teacherCourses?.length).fill(false))
+    const [loading, setLoading] = useState(false)
     const {
         register,
         watch
@@ -48,6 +49,13 @@ const TeacherCourses = () => {
             setDisplayedCourses(teacherCourses)
         }
     }, [searchTitle])
+
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 2000);
+    }, [displayedCourses])
 
     const optionClicked = (index) => {
         setShowEditButton((prevShowEditButtons) => {
@@ -95,6 +103,7 @@ const TeacherCourses = () => {
                         forTeacher={true}
                         showEditButton={showEditButton}
                         optionClicked={optionClicked}
+                        loading={loading}
                     /> 
                 </div> 
             </div>
