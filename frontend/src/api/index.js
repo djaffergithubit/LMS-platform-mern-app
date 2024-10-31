@@ -1,34 +1,7 @@
 import axios from "axios";
-import { setToken } from "../states/authTokenSlice";
 import { useEffect, useState } from "react";
 import { setStatus } from "../states/statusSlice";
-
-// User API
-export const registerUser = async (email, password, username) => {
-    await axios.post('http://localhost:5000/users/register', {username: username, email:email, password:password})
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) =>{
-      console.log(error);
-    })
-  }
-
   
-export const logoutUser = () => async (dispatch) => {
-  console.log('logging out');
-  try {
-    const response = await axios.get('http://localhost:5000/users/logout', {
-      withCredentials: true,
-    });
-
-    dispatch(setToken(''));
-    return response.data;
-  } catch (error) {
-    throw new Error('Unable to log out the user');
-  }
-}
-
 // Course API
 export const getCourses = (token, updated) => {
   const [courses, setCourses] = useState([])

@@ -11,6 +11,7 @@ import { selectToken } from '../../../states/authTokenSlice';
 import axios from 'axios';
 import { socket } from '../../../socket';
 import ReactPlayer from 'react-player';
+import { toast } from 'react-toastify';
 
 const CourseField = ({ field, index, course, chapter }) => {
   const [chapters, setChapters] = useState([])
@@ -48,6 +49,10 @@ const CourseField = ({ field, index, course, chapter }) => {
 
   useEffect(() => {
     socket.on('new chapter added', (message) => {
+      toast.success(message, {
+        position: "top-center",
+      })
+      
       getChaptersApi(course?._id)
     })
 

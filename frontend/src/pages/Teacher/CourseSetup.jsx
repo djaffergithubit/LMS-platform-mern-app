@@ -8,6 +8,7 @@ import { selectToken } from '../../states/authTokenSlice'
 import { useParams } from 'react-router-dom'
 import { socket } from '../../socket'
 import ConfettiEffect from '../../components/ConfettiEffect'
+import { toast } from 'react-toastify'
 
 const CourseSetup = () => {
 
@@ -23,7 +24,10 @@ const CourseSetup = () => {
     })
 
     socket.on('courseField change', (message) => {
-      console.log('courseField change', message);
+      toast.success(message, {
+        position: "top-center"
+      })
+      
       setUpdated(!updated)
     })
 
@@ -33,6 +37,7 @@ const CourseSetup = () => {
 
     return () => {
       socket.off('connect')
+      socket.off('courseField change')
     }
   }, [courses, courseId])
 

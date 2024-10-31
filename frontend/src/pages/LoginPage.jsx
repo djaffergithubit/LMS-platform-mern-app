@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Oauth from '../components/Oauth';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../states/authTokenSlice';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
 
@@ -25,9 +26,18 @@ function LoginPage() {
         .then((response) => {
             console.log(response.data.token);
             dispatch(setToken(response.data.token))
-            Navigate('/')
+            toast.success(`Welcome Back ${response.data.username}!`, {
+              position: 'top-center'
+            }
+            )
+            setTimeout(() => {
+              Navigate('/')
+            }, 2000)
         })
         .catch(err => {
+            toast.error("Something went wrong!", {
+              position: "top-center"
+            })
             console.log(err);  
         })
     };
@@ -41,7 +51,7 @@ function LoginPage() {
                 <div className="text-center">
                     <div className=" space-y-2">
                         <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Sign in</h3>
-                        <p className="">Don't you have an account yet? <a href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-500">Register</a></p>
+                        <p className="">Don't you have an account yet? <a href="/sign-up" className="font-medium text-indigo-600 hover:text-indigo-500">Register</a></p>
                     </div>
                 </div>
                 <form

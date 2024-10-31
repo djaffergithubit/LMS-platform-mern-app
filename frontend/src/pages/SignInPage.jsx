@@ -1,7 +1,8 @@
+import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../api';
+import { toast } from 'react-toastify';
 
 function SignInPage() {
 
@@ -15,14 +16,28 @@ function SignInPage() {
 
   const onSubmit = async (data) => {
     console.log(watch());
-    const register = async () => {
-      try {
-        await registerUser(data.email, data.password, data.username);
-        Navigate('/log-in')
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    const registerUser = async (email, password, username) => {
+      await axios.post('http://localhost:5000/users/register', {username: username, email:email, password:password})
+      .then((response) => {
+        toast.success('logged in successfully', {
+          position: 'top-center'
+        }
+        )
+        setTimeout(() => {
+          Navigate('/log-in')
+        }, 2000);
+        console.log(response.data);
+      })
+      .catch((error) =>{
+        toast.error('Something went wrong!', {
+          position: 'top-center'
+        }
+        )
+        console.log(error);
+      })
+    }
+    
+    await registerUser(data.email, data.password, data.username);
     
     register()
   }

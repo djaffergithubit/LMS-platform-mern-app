@@ -5,22 +5,29 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuCompass } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import ProfileBtn from '../ProfileBtn';
-import { logoutUser } from '../../api';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setToken } from '../../states/authTokenSlice';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SearchCourse = () => {
 
     const [showDetails, setShowDetails] = useState(false)
     const dispatch = useDispatch()
+    const Navigate = useNavigate()
 
     const logout = async() => {
-      await axios('http://localhost:5000/users/logout', {
-        withCredentials: true
-      })
+      await axios('http://localhost:5000/users/logout')
       .then((response) => {
         dispatch(setToken(''))
+        toast.success("You have been logged out successfully", {
+          position: 'top-center'
+        })
+
+        setTimeout(() => {
+          Navigate('/log-in')
+        }, 2000)
       })
       .catch((error) => {
         console.log(error);
@@ -66,12 +73,10 @@ const SearchCourse = () => {
                       <span>Browse</span>
                     </a>
                   </li>
-                  <a href="/sign-in" onClick={logout}>
-                    <li className=' flex items-center ml-2 py-1 text-sm font-semibold text-gray-500' >
+                    <li className=' flex items-center ml-2 py-1 text-sm font-semibold text-gray-500' onClick={logout}>
                       <MdLogout className=' mr-2 text-xl' />
                       <span>Log out</span>
                     </li>
-                  </a>
                 </ul>}
               </div>
           </div>
