@@ -41,13 +41,13 @@ const loginController = async (req, res) => {
             return res.status(400).json({ 'message': 'password not match' })
         }
 
-        const token = await jwt.sign({ userId: userExist._id, email: userExist.email }, process.env.SECRET_KEY, {expiresIn: '1h'})
+        const token = await jwt.sign({ userId: userExist._id, email: userExist.email }, process.env.SECRET_KEY, {expiresIn: '15min'})
         // res.cookies('token', token, {
         //     httpOnly: true,
         //     secure: true
         // })
 
-        return res.status(200).json({ 'message': 'logged in successfully', 'token': token })
+        return res.status(200).json({ 'message': 'logged in successfully', 'token': token, 'username': userExist.username})
 
     } catch (error) {
         return res.status(500).json({'message': error.message})
