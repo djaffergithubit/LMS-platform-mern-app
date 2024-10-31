@@ -13,7 +13,6 @@ router.post('/login', loginController)
 router.post('/google', google)
 
 router.get('/logout', (req, res) => {
-  console.log('logout');
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
