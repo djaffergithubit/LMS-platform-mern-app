@@ -41,7 +41,7 @@ const loginController = async (req, res) => {
             return res.status(400).json({ 'message': 'password not match' })
         }
 
-        const token = await jwt.sign({ userId: userExist._id, email: userExist.email }, process.env.SECRET_KEY, {expiresIn: '15min'})
+        const token = await jwt.sign({ userId: userExist._id, email: userExist.email }, process.env.SECRET_KEY, {expiresIn: '1h'})
         // res.cookies('token', token, {
         //     httpOnly: true,
         //     secure: true

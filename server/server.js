@@ -3,13 +3,11 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const Connect = require('./dbConfig');
-const fs = require('fs');
 const multer = require('multer');
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io');
 const Course = require('./models/course');
-const { Chapter } = require('./models/chapter');
 const User = require('./models/users');
 const updateUser = require('./utils/updateUser');
 const io = new Server(server, {
@@ -29,7 +27,7 @@ app.use(cors({
   credentials: true,
 }));
 
-const endpointSecret = "whsec_8eed9c5a0dd2e1f8969b00ce9c749a941d710e088ce7ded3349d2e0e1287d323";
+const endpointSecret = `${process.env.STRIPE_WEBHOOK_SIGNING_SECRET}`;
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
