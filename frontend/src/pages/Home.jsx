@@ -12,10 +12,6 @@ const Home = () => {
 
   const token = useSelector(selectToken)
 
-  useEffect(() => {
-    console.log('your token', token);
-  }, [token])
-
   return (
     <>
       <main className=' bg-primary'>
@@ -26,7 +22,7 @@ const Home = () => {
           <Stats />
       </main>
       <div>
-        <Outlet />h
+        <Outlet />
       </div>
     </>
   )

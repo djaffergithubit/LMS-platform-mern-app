@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../CourseCard';
-import image1 from "../../assets/Images/photo-1496307042754-b4aa456c4a2d-300x225.jpg"
-import image2 from "../../assets/Images/minimalism4-300x225.jpg"
-import image3 from "../../assets/Images/Rectangle-1804-1-300x225.png"
-import image4 from "../../assets/Images/fhd_cover-1-8-300x225.jpg"
 import { getCourses } from '../../api';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../../states/authTokenSlice';

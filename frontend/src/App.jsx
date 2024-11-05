@@ -15,6 +15,7 @@ import { selectToken } from './states/authTokenSlice';
 import Layout from './pages/Layout';
 import './index.css';
 import useAuth from './hooks/useAuth';
+import NotFoundPage from './pages/NotFoundPage';
 
 const ProtectedRoute = ({ children }) => {
   const token = useSelector(selectToken);
@@ -90,6 +91,16 @@ const App = () => {
             </ProtectedRoute>
           ),
         },
+
+        {
+          path: '/404',
+          element: <NotFoundPage />
+        },
+
+        {
+          path: "*",
+          element: <Navigate to="/404" />,
+        }
       ],
     },
     {
