@@ -1,0 +1,28 @@
+# Node.js dependencies
+node_modules
+
+# Build output
+build
+dist
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Docker configuration files
+.dockerignore
+Dockerfile
+Dockerfile.*
+
+# Git files
+.git
+.gitignore
+
+# Miscellaneous editor or OS files
+.DS_Store
+.vscode
+.idea
+*.swp
